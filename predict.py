@@ -22,11 +22,19 @@ tf.compat.v1.random.set_random_seed(1234)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--ticker', help="The symbol you want to predict")
-parser.add_argument('--n_run', help="The symbol you want to predict")
+parser.add_argument('--interval', help="time interval for data collection: 30m, 60m, 90m, 1d")
+parser.add_argument('--n_run', help="number of simulations to run")
+
 args = parser.parse_args()
+
 ticker = args.ticker
 
-df = data_reader.reader(ticker)
+if not args.interval:
+    interval = "1d"
+else:
+    interval = args.interval
+
+df = data_reader.reader(ticker, interval)
 
 if not args.n_run:
     simulation_size = 10

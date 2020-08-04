@@ -24,7 +24,16 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--ticker', help="The symbol you want to predict")
 args = parser.parse_args()
 
-simulation_size = 5
+df = data_reader.reader(args.ticker)
+
+#--------------------------
+
+minmax = MinMaxScaler().fit(df.iloc[:, 4:5].astype('float32')) # Close index
+df_log = minmax.transform(df.iloc[:, 4:5].astype('float32')) # Close index
+df_log = pd.DataFrame(df_log)
+df_log.head()
+
+simulation_size = 10
 num_layers = 1
 size_layer = 128
 timestamp = 5
@@ -33,18 +42,10 @@ dropout_rate = 0.8
 test_size = 30
 learning_rate = 0.01
 
-#--------------------------
-
-df = data_reader.reader(args.ticker)
-
-minmax = MinMaxScaler().fit(df.iloc[:, 4:5].astype('float32')) # Close index
-df_log = minmax.transform(df.iloc[:, 4:5].astype('float32')) # Close index
-df_log = pd.DataFrame(df_log)
-df_log.head()
-
 df_train = df_log
-print(df.shape, df_train.shape)
+df.shape, df_train.shape
 
+#--------------------------
 
 class Model:
     def __init__(

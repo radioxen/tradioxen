@@ -2,8 +2,10 @@
 import yfinance as yf
 import datetime
 import pandas as pd
+import os
 
 def reader(ticker):
+
     ticker = str(ticker)
     now = datetime.datetime.now() + datetime.timedelta(days=1)
     start = now - datetime.timedelta(days=360)
@@ -13,6 +15,9 @@ def reader(ticker):
     print(data.head())
     print("-----"*5)
     print(data.tail())
-    return pd.read_csv(file_name)
+    df = pd.read_csv(file_name)
+    os.remove(file_name)
+
+    return df
 
 

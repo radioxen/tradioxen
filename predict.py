@@ -27,14 +27,12 @@ parser.add_argument('--n_run', help="number of simulations to run")
 
 args = parser.parse_args()
 
-ticker = args.ticker
-
 if not args.interval:
     interval = "1d"
 else:
     interval = args.interval
 
-df = data_reader.reader(ticker, interval)
+df = data_reader.reader(args.ticker, interval)
 
 if not args.n_run:
     simulation_size = 10
@@ -223,7 +221,7 @@ for no, r in enumerate(accepted_results):
     plt.plot(r, label = 'forecast %d'%(no + 1))
 plt.plot(df['Close'], label = 'true trend', c = 'black')
 plt.legend("lower left")
-plt.title('{} average accuracy: {}'.format(ticker, np.mean(accuracies)))
+plt.title('{} average accuracy: {}'.format(args.ticker, np.mean(accuracies)))
 
 x_range_future = np.arange(len(results[0]))
 plt.xticks(x_range_future[::30], date_ori[::30])

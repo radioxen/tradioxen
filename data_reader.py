@@ -13,7 +13,6 @@ def reader(ticker, interval="1d"):
     ticker = str(ticker)
     now = datetime.datetime.now() + datetime.timedelta(days=1)
     start = now - datetime.timedelta(days=days)
-
     data = yf.download(ticker, start.date().isoformat(), now.date().isoformat(), interval=interval)
     file_name = ticker + ".csv"
     data.to_csv(file_name)

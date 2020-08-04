@@ -22,9 +22,16 @@ tf.compat.v1.random.set_random_seed(1234)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--ticker', help="The symbol you want to predict")
+parser.add_argument('--n_run', help="The symbol you want to predict")
 args = parser.parse_args()
+ticker = args.ticker
 
-df = data_reader.reader(args.ticker)
+df = data_reader.reader(ticker)
+
+if not args.n_run:
+    simulation_size = 10
+else:
+    simulation_size = int(args.n_run)
 
 #--------------------------
 
@@ -33,7 +40,6 @@ df_log = minmax.transform(df.iloc[:, 4:5].astype('float32')) # Close index
 df_log = pd.DataFrame(df_log)
 df_log.head()
 
-simulation_size = 10
 num_layers = 1
 size_layer = 128
 timestamp = 5
@@ -208,8 +214,8 @@ plt.figure(figsize = (15, 5))
 for no, r in enumerate(accepted_results):
     plt.plot(r, label = 'forecast %d'%(no + 1))
 plt.plot(df['Close'], label = 'true trend', c = 'black')
-plt.legend()
-plt.title('average accuracy: %.4f'%(np.mean(accuracies)))
+plt.legend("lower left")
+plt.title('{} average accuracy: {}'.format(ticker, np.mean(accuracies)))
 
 x_range_future = np.arange(len(results[0]))
 plt.xticks(x_range_future[::30], date_ori[::30])

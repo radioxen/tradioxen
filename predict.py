@@ -89,7 +89,7 @@ class Model:
         )
         self.logits = tf.layers.dense(self.outputs[-1], output_size)
         self.cost = tf.reduce_mean(tf.square(self.Y - self.logits))
-        self.optimizer = tf.train.AdamOptimizer(learning_rate).minimize(
+        self.optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate).minimize(
             self.cost
         )
 
@@ -220,7 +220,7 @@ plt.figure(figsize = (15, 5))
 for no, r in enumerate(accepted_results):
     plt.plot(r, label = 'forecast %d'%(no + 1))
 plt.plot(df['Close'], label = 'true trend', c = 'black')
-plt.legend("lower left")
+plt.legend(loc="lower left")
 plt.title('{} average accuracy: {}'.format(args.ticker, np.mean(accuracies)))
 
 x_range_future = np.arange(len(results[0]))
